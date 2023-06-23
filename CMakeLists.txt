@@ -3,6 +3,5 @@ project(GRenderer)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(Eigen3 CONFIG REQUIRED)
-add_executable(GRenderer main.cpp)
-target_link_libraries(GRenderer PRIVATE Eigen3::Eigen)
+
+add_executable(GRenderer main.cpp Tuple3.h Tuple2.h Tuple2.inl)
