@@ -1,0 +1,8 @@
+cmake-build-release
+cmake-build-debug
+.idea/
+html
+latex
+build
+.DS_Store
+

@@ -1,0 +1,4 @@
+
+add_executable(Google_Tests_run VecTest.cpp)
+target_link_libraries(Google_Tests_run gtest gtest_main)
+target_compile_definitions(Google_Tests_run PRIVATE GRENDER_DEBUG_BUILD)
