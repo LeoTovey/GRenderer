@@ -48,6 +48,36 @@
 
 #endif
 
+#define Pi 3.1415926
+template <typename T>
+struct TupleLength { using type = float; };
+
+template <>
+struct TupleLength<double> { using type = double; };
+
+template <typename T, typename U, typename V>
+inline constexpr T Clamp(T val, U low, V high)
+{
+    if (val < low)
+        return T(low);
+    else if (val > high)
+        return T(high);
+    else
+        return val;
+}
+
+inline float SafeASin(float x)
+{
+    DCHECK(x >= -1.0001 && x <= 1.0001);
+    return std::asin(Clamp(x, -1, 1));
+}
+
+inline float SafeACos(float x)
+{
+    DCHECK(x >= -1.0001 && x <= 1.0001);
+    return std::acos(Clamp(x, -1, 1));
+}
+
 
 /**
  * @tparam T
@@ -60,5 +90,26 @@ inline bool IsNaN(T num)
     return std::isnan(num);
 }
 
+template<typename T>
+inline T Lerp(float x, T a, T b)
+{
+    return (1 - x) * a + x * b;
+}
+
+template <typename T>
+inline constexpr T Sqr(const T& v)
+{
+    return v * v;
+}
+
+/**
+ * @tparam T
+ * @return if T is an integral type then return a * b + c, otherwise
+ */
+template <typename T>
+inline typename std::enable_if_t<std::is_integral_v<T>, T> FMA(T a, T b, T c)
+{
+    return a * b + c;
+}
 
 #endif //GRENDERER_MATHUTIL_H

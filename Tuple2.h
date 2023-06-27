@@ -138,8 +138,10 @@ namespace GRender
             return (i == 0) ? x : y;
         }
 
-        /*
-         *  \deprecated
+
+        /**
+         * \deprecated
+         * @return
          */
         std::string ToString() const
         {
@@ -150,8 +152,102 @@ namespace GRender
         T x{}, y{};
     };
 
+    template<template<class> class Child, typename T, typename U>
+    inline auto operator*(U s, const Tuple2<Child, T>& t) -> Child<decltype(T{} * U{})>
+    {
+        DCHECK(!t.HasNaN());
+        return t * s;
+    }
 
+    template<template<class> class Child, typename T>
+    inline Child<T> Abs(const Tuple2<Child, T>& t)
+    {
+        using std::abs;
+        return {abs(t.x), abs(t.y)};
+    }
 
+    template<template<class> class Child, typename T>
+    inline Child<T> Ceil(const Tuple2<Child, T>& t)
+    {
+        using std::ceil;
+        return {ceil(t.x), ceil(t.y)};
+    }
+
+    template<template<class> class Child, typename T>
+    inline Child<T> Floor(const Tuple2<Child, T>& t)
+    {
+        using std::floor;
+        return {floor(t.x), floor(t.y)};
+    }
+
+    template<template<class> class Child, typename T>
+    inline auto Lerp(float t, const Tuple2<Child, T>& a, const Tuple2<Child, T>& b)
+    {
+        return (1 - t) * a + t * b;
+    }
+
+    /**
+     * \deprecated
+     */
+    template<template<class> class Child, typename T, typename U>
+    inline Child<T> FMA(U a, const Tuple2<Child, T>& b, const Tuple2<Child, T>& c)
+    {
+        return a * b + c;
+    }
+
+    template<template <class> class Child, typename T>
+    inline Child<T> Min(const Tuple2<Child, T>& t1, const Tuple2<Child, T>& t2)
+    {
+        using std::min;
+        return {min(t1.x, t2.x), min(t1.y, t2.y)};
+    }
+
+    template<template <class> class Child, typename T>
+    inline Child<T> Max(const Tuple2<Child, T>& t1, const Tuple2<Child, T>& t2)
+    {
+        using std::max;
+        return {max(t1.x, t2.x), max(t1.y, t2.y)};
+    }
+
+    template<template <class> class Child, typename T>
+    inline T MaxComponentValue(const Tuple2<Child, T>& t)
+    {
+        using std::max;
+        return max(t.x, t.y);
+    }
+
+    template<template <class> class Child, typename T>
+    inline T MinComponentValue(const Tuple2<Child, T>& t)
+    {
+        using std::min;
+        return min(t.x, t.y);
+    }
+
+    template<template <class> class Child, typename T>
+    inline unsigned int MaxComponentIndex(const Tuple2<Child, T>& t)
+    {
+        using std::max;
+        return (t.x > t.y) ? 0 : 1;
+    }
+
+    template<template <class> class Child, typename T>
+    inline unsigned int MinComponentIndex(const Tuple2<Child, T>& t)
+    {
+        using std::min;
+        return (t.x < t.y) ? 0 : 1;
+    }
+
+    template<template <class> class Child, typename T>
+    inline Child<T> Permute(const Tuple2<Child, T>& a, const std::array<unsigned int, 2>& perm)
+    {
+        return {a[perm[0]], a[perm[1]]};
+    }
+
+    template<template <class> class Child, typename T>
+    inline T HProd(const Tuple2<Child, T>& a)
+    {
+        return a.x * a.y;
+    }
 
 }
 
