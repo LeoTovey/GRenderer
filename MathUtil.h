@@ -8,7 +8,8 @@
 #include <cmath>
 #include <limits>
 #include <string>
-
+#include <cassert>
+#include <array>
 
 #define CHECK(x) assert(x)
 #define CHECK_IMPL(a, b, op) assert((a)op(b))
@@ -102,6 +103,14 @@ inline constexpr T Sqr(const T& v)
     return v * v;
 }
 
+
+
+template <typename T>
+inline float FMA(float a, float b, float c)
+{
+    return std::fma(a, b, c);
+}
+
 /**
  * @tparam T
  * @return if T is an integral type then return a * b + c, otherwise
@@ -110,6 +119,23 @@ template <typename T>
 inline typename std::enable_if_t<std::is_integral_v<T>, T> FMA(T a, T b, T c)
 {
     return a * b + c;
+}
+
+/**
+ * float
+ */
+template <typename Ta, typename Tb, typename Tc, typename Td>
+inline auto DifferenceOfProducts(Ta a, Tb b, Tc c, Td d)
+{
+    auto cd = c * d;
+    auto differenceOfProducts = FMA(a, b, -cd);
+    auto error = FMA(-c, d, cd);
+    return differenceOfProducts + error;
+}
+
+inline float copysign(float mag, float sign)
+{
+    return std::copysign(mag, sign);
 }
 
 #endif //GRENDERER_MATHUTIL_H

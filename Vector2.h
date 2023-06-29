@@ -32,9 +32,9 @@ namespace GRender
          * \deprecated
          */
         template <typename U>
-        explicit Vector2(Point2<U> p){}
+        explicit Vector2(Point2<U> p) : Tuple2<GRender::Vector2, T>(T(p.x), T(p.y)){}
         template <typename U>
-        explicit Vector2(Normal2<U> n){}
+        explicit Vector2(Normal2<U> n) : Tuple2<GRender::Vector2, T>(T(n.x), T(n.y)){}
     };
 
     using Vector2f = Vector2<float>;
@@ -42,6 +42,18 @@ namespace GRender
     using Vector2i = Vector2<int>;
     using Vector2u = Vector2<unsigned int>;
 
+    template<typename T>
+    inline auto LengthSquared(const Vector2<T>& v) -> typename TupleLength<T>::type
+    {
+        return Sqr(v.x) + Sqr(v.y);
+    }
+
+    template<typename T>
+    inline auto Length(const Vector2<T>& v) -> typename TupleLength<T>::type
+    {
+        using std::sqrt;
+        return sqrt(LengthSquared(v));
+    }
 
 }
 #endif //GRENDERER_VECTOR2_H

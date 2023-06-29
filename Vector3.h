@@ -33,9 +33,9 @@ namespace GRender
         * \deprecated
         */
         template <typename U>
-        explicit Vector3(Point3<U> p){}
+        explicit Vector3(const Point3<U>& p): Tuple3<GRender::Vector3, T>(T(p.x), T(p.y), T(p.z)){}
         template <typename U>
-        explicit Vector3(Normal3<U> n){}
+        explicit Vector3(const Normal3<U>& n): Tuple3<GRender::Vector3, T>(T(n.x), T(n.y), T(n.z)){}
     };
 
     using Vector3f = Vector3<float>;
@@ -76,7 +76,6 @@ namespace GRender
         return std::abs(Dot(v, w));
     }
 
-
     /**
      * /Deprecated : sin and
      */
@@ -91,6 +90,36 @@ namespace GRender
             return 2 * SafeASin(Length(w - v) / 2);
         }
     }
+
+    /**
+     *  todo: test
+     */
+    template <typename T>
+    inline Vector3<T> GramSchmidt(const Vector3<T>& v,const Vector3<T>& w)
+    {
+        return v - Dot(v, w) * w;
+    }
+
+    /**
+     * todo: test
+     */
+    template <typename T>
+    inline Vector3<T> Cross(const Vector3<T>& v, const Vector3<T>& w)
+    {
+        return {DifferenceOfProducts(v.y, w.z, v.z, w.y),
+                DifferenceOfProducts(v.z, w.x, v.x, w.z),
+                DifferenceOfProducts(v.x, w.y, v.y, w.x)};
+    }
+
+//    template <typename T>
+//    inline void CoordinateSystem(const Vector3<T>& v1, Vector3<T> &v2, Vector3<T> &v3)
+//    {
+//        float sign = copysign(float(1), v1.z);
+//        float a = -1 / (sign + v1.z);
+//        float b = v1.x * v1.y * a;
+//        *v2 = Vector3<T>(1 + sign * Sqr(v1.x) * a, sign * b, -sign * v1.x);
+//        *v3 = Vector3<T>(b, sign + Sqr(v1.y) * a, -v1.y);
+//    }
 }
 
 #endif //GRENDERER_VECTOR3_H
